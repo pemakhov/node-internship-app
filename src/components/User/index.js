@@ -24,13 +24,51 @@ async function findAll(req, res, next) {
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function createUser(req, res, next) {
+async function find(req, res, next) {
     try {
-        const { email } = req.query;
-        const { fullName } = req.query;
-        console.log(email, fullName);
-        UserService.createUser(email, fullName);
+        const { query } = req;
+        const users = await UserService.find(query);
 
+        res.status(200).json(users);
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise < void >}
+ */
+async function create(req, res, next) {
+    try {
+        const { email } = req.body;
+        const { fullName } = req.body;
+        const newUser = await UserService.create(email, fullName);
+
+        res.status(200).json(newUser);
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise < void >}
+ */
+async function update(req, res, next) {
+    res.send(req.query);
+    try {
+        const { fullName } = req.body;
+        const { newData } = req.body;
+        const updatedUser = await UserService.update(fullName, newData);
+
+        res.status(200).json(updatedUser);
     } catch (error) {
         next(error);
     }
@@ -38,5 +76,7 @@ async function createUser(req, res, next) {
 
 module.exports = {
     findAll,
-    createUser,
+    find,
+    create,
+    update,
 };

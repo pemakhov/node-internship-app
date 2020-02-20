@@ -27,7 +27,8 @@
     curl --location --request PUT 'localhost:3000/v1/users/update' \
     --header 'Content-Type: application/json' \
     --data-raw '{
-        "fullName": "Update User"
+        "fullName": "Test User",
+        "newdata": "Update User"
     }'
 ```
 
