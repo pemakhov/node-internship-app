@@ -30,11 +30,24 @@ module.exports = {
             return result;
         });
     },
-    async update(query, newData) {
-        return UserModel.update(query, newData);
+    /**
+     * @exports
+     * @method update
+     * @param {}
+     * @summary create a user
+     * @returns the result of the update operation
+     */
+    async update(email, fullName) {
+        return UserModel.updateMany({ email }, { $set: { fullName } });
     },
-    async delete() {
-        const result = {};
-        return result;
+    /**
+     * @exports
+     * @method delete
+     * @param {}
+     * @summary create a user
+     * @returns the result of the delete operation
+     */
+    async deleteUser(email) {
+        return UserModel.deleteOne({ email });
     },
 };

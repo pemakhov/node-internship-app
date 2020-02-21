@@ -56,6 +56,6 @@ router.put('/update', UserComponent.update);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-// router.delete('/delete', UserComponent.delete);
+router.delete('/delete', UserComponent.deleteUser);
 
 module.exports = router;
