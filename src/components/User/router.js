@@ -19,43 +19,43 @@ const router = Router();
 router.get('/', UserComponent.findAll);
 
 /**
- * Route serving finding a user by a property.
- * @name /v1/users
+ * Route serving a user
+ * @name /v1/users/:id
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/find', UserComponent.find);
+router.get('/:id', UserComponent.findById);
 
 /**
- * Route serving creating a user.
+ * Route serving a new user
  * @name /v1/users
  * @function
  * @inner
  * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
+ * @param {callback} middleware - Express middleware
  */
-router.post('/create', UserComponent.create);
+router.post('/', UserComponent.create);
 
 /**
- * Route serving updating of a user.
+ * Route serving a new user
  * @name /v1/users
  * @function
  * @inner
  * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
+ * @param {callback} middleware - Express middleware
  */
-router.put('/update', UserComponent.update);
+router.put('/', UserComponent.updateById);
 
 /**
- * Route serving deleting of a user.
+ * Route serving a new user
  * @name /v1/users
  * @function
  * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
+ * @param {string} path -Express path
+ * @param {callback} middleware - Express middleware
  */
-router.delete('/delete', UserComponent.deleteUser);
+router.delete('/', UserComponent.deleteById);
 
 module.exports = router;

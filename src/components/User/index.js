@@ -1,5 +1,6 @@
 const UserService = require('./service');
-const Joi = require('./validation');
+const UserValidation = require('./validation');
+const ValidationError = require('../../error/ValidationError');
 
 /**
  * @function
@@ -12,8 +13,15 @@ async function findAll(req, res, next) {
     try {
         const users = await UserService.findAll();
 
-        res.status(200).json(users);
+        res.status(200).json({
+            data: users,
+        });
     } catch (error) {
+        res.status(500).json({
+            error: error.message,
+            details: null,
+        });
+
         next(error);
     }
 }
@@ -25,18 +33,33 @@ async function findAll(req, res, next) {
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function find(req, res, next) {
+async function findById(req, res, next) {
     try {
-        const { query } = req;
-        const validationError = Joi.validate(query).error;
-        if (validationError) {
-            res.status(400).json(validationError.details[0].message);
-            return;
+        const { error } = UserValidation.findById(req.params);
+
+        if (error) {
+            throw new ValidationError(error.details);
         }
-        const users = await UserService.find(query);
-        res.status(200).json(users);
+
+        const user = await UserService.findById(req.params.id);
+
+        return res.status(200).json({
+            data: user,
+        });
     } catch (error) {
-        next(error);
+        if (error instanceof ValidationError) {
+            return res.status(422).json({
+                error: error.name,
+                details: error.message,
+            });
+        }
+
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
+
+        return next(error);
     }
 }
 
@@ -49,18 +72,31 @@ async function find(req, res, next) {
  */
 async function create(req, res, next) {
     try {
-        const validationError = Joi.validate(req.body).error;
-        if (validationError) {
-            res.status(400).json(validationError.details[0].message);
-            return;
-        }
-        const { email } = req.body;
-        const { fullName } = req.body;
-        const newUser = await UserService.create(email, fullName);
+        const { error } = UserValidation.create(req.body);
 
-        res.status(200).json(newUser);
+        if (error) {
+            throw new ValidationError(error.details);
+        }
+
+        const user = await UserService.create(req.body);
+
+        return res.status(200).json({
+            data: user,
+        });
     } catch (error) {
-        next(error);
+        if (error instanceof ValidationError) {
+            return res.status(422).json({
+                message: error.name,
+                details: error.message,
+            });
+        }
+
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
+
+        return next(error);
     }
 }
 
@@ -69,22 +105,35 @@ async function create(req, res, next) {
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
- * @returns {Promise < void >}
+ * @returns {Promise<void>}
  */
-async function update(req, res, next) {
+async function updateById(req, res, next) {
     try {
-        const validationError = Joi.validate(req.body).error;
-        if (validationError) {
-            res.status(400).json(validationError.details[0].message);
-            return;
-        }
-        const { email } = req.body;
-        const { fullName } = req.body;
-        const updatedUser = await UserService.update(email, fullName);
+        const { error } = UserValidation.updateById(req.body);
 
-        res.status(200).json(updatedUser);
+        if (error) {
+            throw new ValidationError(error.details);
+        }
+
+        const updatedUser = await UserService.updateById(req.body.id, req.body);
+
+        return res.status(200).json({
+            data: updatedUser,
+        });
     } catch (error) {
-        next(error);
+        if (error instanceof ValidationError) {
+            return res.status(422).json({
+                message: error.name,
+                details: error.message,
+            });
+        }
+
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
+
+        return next(error);
     }
 }
 
@@ -93,28 +142,42 @@ async function update(req, res, next) {
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
- * @returns {Promise < void >}
+ * @returns {Promise<void>}
  */
-async function deleteUser(req, res, next) {
+async function deleteById(req, res, next) {
     try {
-        const validationError = Joi.validate(req.body).error;
-        if (validationError) {
-            res.status(400).json(validationError.details[0].message);
-            return;
-        }
-        const { email } = req.body;
-        const deleted = await UserService.deleteUser(email);
+        const { error } = UserValidation.deleteById(req.body);
 
-        res.status(200).json(deleted);
+        if (error) {
+            throw new ValidationError(error.details);
+        }
+
+        const deletedUser = await UserService.deleteById(req.body.id);
+
+        return res.status(200).json({
+            data: deletedUser,
+        });
     } catch (error) {
-        next(error);
+        if (error instanceof ValidationError) {
+            return res.status(422).json({
+                message: error.name,
+                details: error.message,
+            });
+        }
+
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
+
+        return next(error);
     }
 }
 
 module.exports = {
     findAll,
-    find,
+    findById,
     create,
-    update,
-    deleteUser,
+    updateById,
+    deleteById,
 };
