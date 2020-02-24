@@ -1,0 +1,17 @@
+<!-- Modal Trigger -->
+<% modalId = userId + '_update' %>
+<a class="modal-trigger" href="#<%= modalId %>">update</a>
+
+<!-- Modal Structure -->
+<div id="<%= modalId %>" class="modal left-align">
+    <form action="/v1/users/update" method="POST" enctype="aplication/json">
+        <div class="container" style="padding: 50px 0;">
+            <input type="hidden" name="id" value="<%= user._id %>">
+            <input type="text" name="fullName" placeholder="Full Name">
+            <div class="modal-footer">
+                <a href="#!" class="modal-close grey darken-1 btn">Cancel</a>
+                <button type="submit" class="modal-close light-blue btn">Update</button>
+            </div>
+        </div>
+    </form>
+</div>

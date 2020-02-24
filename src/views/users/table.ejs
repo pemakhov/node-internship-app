@@ -1,0 +1,16 @@
+<table class="striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>email</th>
+            <th></th>
+            <th>full name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% users.forEach((user, i) => { %> 
+            <%- include('table-row', { user, i }); %> 
+        <% }); %> 
+    </tbody>
+</table>

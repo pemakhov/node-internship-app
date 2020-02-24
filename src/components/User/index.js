@@ -13,9 +13,7 @@ async function findAll(req, res, next) {
     try {
         const users = await UserService.findAll();
 
-        res.status(200).json({
-            data: users,
-        });
+        res.status(200).render('users/index', { users });
     } catch (error) {
         res.status(500).json({
             error: error.message,
@@ -80,9 +78,7 @@ async function create(req, res, next) {
 
         const user = await UserService.create(req.body);
 
-        return res.status(200).json({
-            data: user,
-        });
+        return res.status(200).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -117,9 +113,7 @@ async function updateById(req, res, next) {
 
         const updatedUser = await UserService.updateById(req.body.id, req.body);
 
-        return res.status(200).json({
-            data: updatedUser,
-        });
+        return res.status(200).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -154,9 +148,7 @@ async function deleteById(req, res, next) {
 
         const deletedUser = await UserService.deleteById(req.body.id);
 
-        return res.status(200).json({
-            data: deletedUser,
-        });
+        return res.status(200).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
