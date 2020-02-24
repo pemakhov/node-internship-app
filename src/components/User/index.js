@@ -77,6 +77,7 @@ async function create(req, res, next) {
         }
 
         const user = await UserService.create(req.body);
+        console.log(user);
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
@@ -112,6 +113,7 @@ async function updateById(req, res, next) {
         }
 
         const updatedUser = await UserService.updateById(req.body.id, req.body);
+        console.log(updatedUser);
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
@@ -147,6 +149,7 @@ async function deleteById(req, res, next) {
         }
 
         const deletedUser = await UserService.deleteById(req.body.id);
+        console.log(deletedUser);
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
