@@ -1,6 +1,7 @@
 const UserService = require('./service');
 const UserValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
+const ServerError = require('../../error/ServerError');
 
 /**
  * @function
@@ -77,7 +78,10 @@ async function create(req, res, next) {
         }
 
         const user = await UserService.create(req.body);
-        console.log(user);
+
+        if (!(user.fullName && user.email)) {
+            throw new ServerError(error.details);
+        }
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
@@ -113,7 +117,10 @@ async function updateById(req, res, next) {
         }
 
         const updatedUser = await UserService.updateById(req.body.id, req.body);
-        console.log(updatedUser);
+
+        if (!updatedUser.ok) {
+            throw new ServerError(error.details);
+        }
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
@@ -149,7 +156,10 @@ async function deleteById(req, res, next) {
         }
 
         const deletedUser = await UserService.deleteById(req.body.id);
-        console.log(deletedUser);
+
+        if (!deletedUser.ok) {
+            throw new ServerError(error.details);
+        }
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
