@@ -47,10 +47,8 @@ module.exports = {
         });
         // sets view path
         app.set('views', path.join(__dirname, '..', 'views'));
-
         // sets view engine
         app.set('view engine', 'ejs');
-
         // sets the dirrectory for front-end files
         app.use(express.static(path.join(__dirname, '../public')));
     },
