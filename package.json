@@ -9,7 +9,7 @@
     "scripts": {
         "format": "prettier --config=.prettierrc.json --write '**/*.js' && eslint --fix '**/*.js'",
         "commit": "git-cz",
-        "start": "nodemon src/server/index.js"
+        "start": "node src/server/index.js"
     },
     "husky": {
         "hooks": {
