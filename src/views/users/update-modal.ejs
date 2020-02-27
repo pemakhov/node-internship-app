@@ -6,6 +6,7 @@
 <div id="<%= modalId %>" class="modal left-align">
     <form action="/v1/users/update" method="POST" enctype="aplication/json">
         <div class="container" style="padding: 50px 0;">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="id" value="<%= user._id %>">
             <input type="text" name="fullName" placeholder="Full Name">
             <div class="modal-footer">

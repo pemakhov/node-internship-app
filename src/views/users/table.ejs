@@ -10,7 +10,7 @@
     </thead>
     <tbody>
         <% users.forEach((user, i) => { %> 
-            <%- include('table-row', { user, i }); %> 
+            <%- include('table-row', { user, i, csrfToken }); %> 
         <% }); %> 
     </tbody>
 </table>

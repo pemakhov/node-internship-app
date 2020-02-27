@@ -3,6 +3,9 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
+const csrf = require('csurf');
+const express = require('express');
 
 module.exports = {
     /**
@@ -20,6 +23,8 @@ module.exports = {
         app.use(bodyParser.json());
         // parse Cookie header and populate req.cookies with an object keyed by the cookie names.
         app.use(cookieParser());
+        // performs csrf protection
+        app.use(csrf({ cookie: true }));
         // returns the compression middleware
         app.use(compression());
         // helps you secure your Express apps by setting various HTTP headers
@@ -40,5 +45,13 @@ module.exports = {
             );
             next();
         });
+        // sets view path
+        app.set('views', path.join(__dirname, '..', 'views'));
+
+        // sets view engine
+        app.set('view engine', 'ejs');
+
+        // sets the dirrectory for front-end files
+        app.use(express.static(path.join(__dirname, '../public')));
     },
 };

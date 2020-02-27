@@ -2,7 +2,6 @@ require('dotenv').config({
     path: `${process.cwd()}/src/config/.env`,
 });
 const express = require('express');
-const path = require('path');
 const middleware = require('../config/middleware');
 const routes = require('../config/router');
 
@@ -12,21 +11,6 @@ const routes = require('../config/router');
  * @constant {express.Application}
  */
 const app = express();
-
-/**
- * @description sets view path
- */
-app.set('views', path.join(__dirname, '..', 'views'));
-
-/**
- * @description sets view engine
- */
-app.set('view engine', 'ejs');
-
-/**
- * @description sets the dirrectory for front-end files
- */
-app.use(express.static(path.join(__dirname, '../public')));
 
 /**
  * @description express.Application Middleware

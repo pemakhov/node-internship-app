@@ -1,7 +1,6 @@
 const UserService = require('./service');
 const UserValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
-const ServerError = require('../../error/ServerError');
 
 /**
  * @function
@@ -14,11 +13,15 @@ async function findAll(req, res, next) {
     try {
         const users = await UserService.findAll();
 
-        res.status(200).render('users/index', { users });
+        res.status(200).render('users/index', {
+            users,
+            csrfToken: req.csrfToken(),
+        });
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            details: null,
+        console.error(error);
+        res.status(500).render({
+            error: '500',
+            message: error.message[0].message,
         });
 
         next(error);
@@ -46,16 +49,17 @@ async function findById(req, res, next) {
             data: user,
         });
     } catch (error) {
+        console.error(error);
         if (error instanceof ValidationError) {
-            return res.status(422).json({
-                error: error.name,
-                details: error.message,
+            return res.status(422).render('errors/index', {
+                error: '422',
+                message: error.message[0].message,
             });
         }
 
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
+        res.status(500).render({
+            error: '500',
+            message: error.message[0].message,
         });
 
         return next(error);
@@ -77,24 +81,21 @@ async function create(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const user = await UserService.create(req.body);
-
-        if (!(user.fullName && user.email)) {
-            throw new ServerError(error.details);
-        }
+        UserService.create(req.body);
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
+        console.error(error);
         if (error instanceof ValidationError) {
-            return res.status(422).json({
-                message: error.name,
-                details: error.message,
+            return res.status(422).render('errors/index', {
+                error: '422',
+                message: error.message[0].message,
             });
         }
 
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
+        res.status(500).render({
+            error: '500',
+            message: error.message[0].message,
         });
 
         return next(error);
@@ -116,24 +117,21 @@ async function updateById(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const updatedUser = await UserService.updateById(req.body.id, req.body);
-
-        if (!updatedUser.ok) {
-            throw new ServerError(error.details);
-        }
+        UserService.updateById(req.body.id, req.body);
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
+        console.error(error);
         if (error instanceof ValidationError) {
-            return res.status(422).json({
-                message: error.name,
-                details: error.message,
+            return res.status(422).render('errors/index', {
+                error: '422',
+                message: error.message[0].message,
             });
         }
 
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
+        res.status(500).render({
+            error: '500',
+            message: error.message[0].message,
         });
 
         return next(error);
@@ -155,24 +153,21 @@ async function deleteById(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const deletedUser = await UserService.deleteById(req.body.id);
-
-        if (!deletedUser.ok) {
-            throw new ServerError(error.details);
-        }
+        UserService.deleteById(req.body.id);
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
+        console.error(error);
         if (error instanceof ValidationError) {
-            return res.status(422).json({
-                message: error.name,
-                details: error.message,
+            return res.status(422).render('errors/index', {
+                error: '422',
+                message: error.message[0].message,
             });
         }
 
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
+        res.status(500).render({
+            error: '500',
+            message: error.message[0].message,
         });
 
         return next(error);
