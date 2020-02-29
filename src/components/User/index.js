@@ -18,7 +18,6 @@ async function findAll(req, res, next) {
             csrfToken: req.csrfToken(),
         });
     } catch (error) {
-        console.error(error);
         res.status(500).render({
             error: '500',
             message: error.message[0].message,
@@ -49,7 +48,6 @@ async function findById(req, res, next) {
             data: user,
         });
     } catch (error) {
-        console.error(error);
         if (error instanceof ValidationError) {
             return res.status(422).render('errors/index', {
                 error: '422',
@@ -85,7 +83,6 @@ async function create(req, res, next) {
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
-        console.error(error);
         if (error instanceof ValidationError) {
             return res.status(422).render('errors/index', {
                 error: '422',
@@ -121,7 +118,6 @@ async function updateById(req, res, next) {
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
-        console.error(error);
         if (error instanceof ValidationError) {
             return res.status(422).render('errors/index', {
                 error: '422',
@@ -157,7 +153,6 @@ async function deleteById(req, res, next) {
 
         return res.status(200).redirect('/v1/users');
     } catch (error) {
-        console.error(error);
         if (error instanceof ValidationError) {
             return res.status(422).render('errors/index', {
                 error: '422',
