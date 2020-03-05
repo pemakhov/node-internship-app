@@ -54,4 +54,4 @@ const saveEmails = (emails) => {
     }
 };
 
-grabEmails.then(saveEmails);
+grabEmails.then(saveEmails).then(() => console.log('The end of grabbing process.'));

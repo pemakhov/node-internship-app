@@ -10,7 +10,8 @@
         "format": "prettier --config=.prettierrc.json --write '**/*.js' && eslint --fix '**/*.js'",
         "commit": "git-cz",
         "start": "node src/server/index.js",
-        "grab-emails": "node src/.tmp/email-grabber.js"
+        "grab-emails": "node src/.tmp/email-grabber.js",
+        "screenshot": "node src/.tmp/screenshot-uploader.js"
     },
     "husky": {
         "hooks": {
