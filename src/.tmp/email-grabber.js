@@ -25,7 +25,7 @@ const GrabbedEmailsSchema = new Schema(
         }
     },
     {
-        collection: 'emails',
+        collection: 'GrabbingEmails',
         versionKey: false,
     }
 );
