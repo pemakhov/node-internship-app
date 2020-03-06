@@ -4,22 +4,7 @@ const { Schema } = require('mongoose');
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
-
-const WEB_PAGE = 'http://localhost:3000/v1/users';
-const MONGODB_URI = 'mongodb://localhost:27017/';
-const MONGODB_DB_MAIN = 'grabbed_data';
-const MONGO_URI = `${MONGODB_URI}${MONGODB_DB_MAIN}`;
 const FILE_NAME = 'site-screen.png';
-
-const connectOptions = {
-    autoReconnect: true,
-    reconnectTries: Number.MAX_VALUE,
-    reconnectInterval: 1000,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-};
-
-const connections = mongoose.createConnection(MONGO_URI, connectOptions);
 
 const ScreenshotsSchema = new Schema(
     {
@@ -34,29 +19,61 @@ const ScreenshotsSchema = new Schema(
     }
 );
 
-const connectionsModel = connections.model('ScreenshotsModel', ScreenshotsSchema);
+/**
+ * Class managing working with database
+ */
+class DbManager {
+    connectOptions = {
+        autoReconnect: true,
+        reconnectTries: Number.MAX_VALUE,
+        reconnectInterval: 1000,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    };
 
-const grabScreenshot = async () => {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
+    constructor(screenshotsSchema) {
+        this.MONGODB_URI = 'mongodb://localhost:27017/';
+        this.MONGODB_DB_MAIN = 'grabbed_data';
+        this.MONGO_URI = `${this.MONGODB_URI}${this.MONGODB_DB_MAIN}`;
+        this.SCREEN_LINK_BODY = 'https://drive.google.com/open?id=';
 
-    await page.goto(WEB_PAGE);
-
-    await page.screenshot({ path: FILE_NAME });
-
-    await browser.close();
-};
-
-const SCREEN_LINK_BODY = 'https://drive.google.com/open?id=';
-
-const saveLink = (id) => {
-    try {
-        const link = SCREEN_LINK_BODY + id;
-        connectionsModel.create({ link });
-    } catch (error) {
+        this.connections = mongoose.createConnection(this.MONGO_URI, this.connectOptions);
+        this.connectionsModel = this.connections.model('GrabbedEmailsModel', screenshotsSchema);
     }
+
+    /**
+     * Saves link to the screenshot into the database collection
+     * @param {*} id 
+     */
+    saveLink(id) {
+        try {
+            const link = this.SCREEN_LINK_BODY + id;
+            this.connectionsModel.create({ link });
+        } catch (error) {
+        }
+    };
 };
 
+/**
+ * Class grabbing a screenshot of a web page
+ */
+class ScreenshotGrabber {
+    constructor() {
+        this.WEB_PAGE = 'http://localhost:3000/v1/users';
+    }
+
+    /**
+     * Grabs screenshot
+     */
+    async grab() {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+
+        await page.goto(this.WEB_PAGE);
+        await page.screenshot({ path: FILE_NAME });
+        await browser.close();
+    };
+};
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
@@ -114,30 +131,10 @@ function getAccessToken(oAuth2Client, callback) {
         });
     });
 }
-
 /**
- * Lists the names and IDs of up to 10 files.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ * Uploads screen to google drive and makes it sharable
+ * @param {*} auth 
  */
-function listFiles(auth) {
-    const drive = google.drive({ version: 'v3', auth });
-    drive.files.list({
-        pageSize: 10,
-        fields: 'nextPageToken, files(id, name)',
-    }, (err, res) => {
-        if (err) return console.log('The API returned an error: ' + err);
-        const files = res.data.files;
-        if (files.length) {
-            console.log('Files:');
-            files.map((file) => {
-                console.log(`${file.name} (${file.id})`);
-            });
-        } else {
-            console.log('No files found.');
-        }
-    });
-}
-
 const uploadScreen = (auth) => {
     const drive = google.drive({ version: 'v3', auth });
     const fileMetadata = {
@@ -148,6 +145,10 @@ const uploadScreen = (auth) => {
         body: fs.createReadStream(FILE_NAME)
     };
 
+    /**
+     * Gives the file appropriate permissions
+     * @param {*} id 
+     */
     const makeLinkSharable = (id) => {
         drive.permissions.create({
             fileId: id,
@@ -158,10 +159,9 @@ const uploadScreen = (auth) => {
         }, function (err, result) {
             if (err) {
                 console.log(err);
-            } else {
-            }
+            } else { }
         });
-    }
+    };
 
     drive.files.create({
         resource: fileMetadata,
@@ -171,18 +171,25 @@ const uploadScreen = (auth) => {
         if (err) {
             console.error(err);
         } else {
-            console.log('Screennshot was successfully uploaded');
             makeLinkSharable(file.data.id);
-            saveLink(file.data.id);
+            return file.data.id;
         }
     });
 };
 
-grabScreenshot().then(() => {
-    // Load client secrets from a local file.
-    fs.readFile('credentials.json', (err, content) => {
-        if (err) return console.log('Error loading client secret file:', err);
-        // Authorize a client with credentials, then call the Google Drive API.
-        authorize(JSON.parse(content), uploadScreen);
-    });
-});
+const screenshotGrabber = new ScreenshotGrabber();
+const dbManager = new DbManager(ScreenshotsSchema);
+
+screenshotGrabber.grab()
+    .then(() => {
+        // Load client secrets from a local file.
+        fs.readFile('credentials.json', (err, content) => {
+            if (err) {
+                return console.log('Error loading client secret file:', err);
+            }
+            // Authorize a client with credentials, then call the Google Drive API.
+            authorize(JSON.parse(content), uploadScreen);
+        });
+    })
+    .then((id) => dbManager.saveLink(id))
+    .then(() => console.log('Screenshot was successfully uploaded'));
