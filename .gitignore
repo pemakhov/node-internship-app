@@ -10,3 +10,5 @@ node_modules/
 playground/
 .eslintrc
 site-screen.png
+.tmp/
+*.rest

@@ -81,7 +81,7 @@ async function create(req, res, next) {
 
         UserService.create(req.body);
 
-        return res.status(200).redirect('/v1/users');
+        return res.status(302).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).render('errors/index', {
@@ -116,7 +116,7 @@ async function updateById(req, res, next) {
 
         UserService.updateById(req.body.id, req.body);
 
-        return res.status(200).redirect('/v1/users');
+        return res.status(302).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).render('errors/index', {
