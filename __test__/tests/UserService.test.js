@@ -31,8 +31,8 @@ describe('UserComponent -> service', () => {
         done();
     });
     it('UserComponent -> service -> updateById', (done) => {
-        expect(UtilService.updateById(TEST_USER_ID, { fullName: 'Updated Name' })
-            .to.eventually.have.property('ok').to.equal(1));
+        expect(UtilService.updateById(TEST_USER_ID, { fullName: 'Updated Name' }))
+            .to.eventually.have.property('ok').to.equal(1);
         done();
     });
     it('UserComponent -> service -> deleteById', (done) => {
