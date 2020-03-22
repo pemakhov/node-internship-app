@@ -10,7 +10,7 @@
         "format": "prettier --config=.prettierrc.json --write '**/*.js' && eslint --fix '**/*.js'",
         "commit": "git-cz",
         "start": "node src/server/index.js",
-        "test": "npx mocha ./__test__ --reporter nyan --exit "
+        "test": "npx mocha ./__test__ --exit "
     },
     "husky": {
         "hooks": {
@@ -39,6 +39,7 @@
     },
     "devDependencies": {
         "bcrypt": "4.0.1",
+        "chai-as-promised": "^7.1.1",
         "cz-conventional-changelog": "3.1.0",
         "eslint": "6.8.0",
         "eslint-config-airbnb": "18.0.1",
@@ -51,7 +52,8 @@
         "eslint-plugin-prettier": "3.1.2",
         "eslint-plugin-react": "7.18.3",
         "eslint-plugin-react-hooks": "^2.5.0",
-        "husky": "4.2.3"
+        "husky": "4.2.3",
+        "mocha-clean": "^1.0.0"
     },
     "config": {
         "commitizen": {

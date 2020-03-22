@@ -18,7 +18,7 @@ async function findAll(req, res, next) {
             csrfToken: req.csrfToken(),
         });
     } catch (error) {
-        res.status(500).render({
+        res.status(500).json({
             error: '500',
             message: error.message[0].message,
         });
@@ -49,7 +49,7 @@ async function findById(req, res, next) {
         });
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).render('errors/index', {
+            return res.status(422).json({
                 error: '422',
                 message: error.message[0].message,
             });
@@ -84,13 +84,13 @@ async function create(req, res, next) {
         return res.status(302).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).render('errors/index', {
+            return res.status(422).json({
                 error: '422',
                 message: error.message[0].message,
             });
         }
 
-        res.status(500).render({
+        res.status(500).json({
             error: '500',
             message: error.message[0].message,
         });
@@ -119,13 +119,13 @@ async function updateById(req, res, next) {
         return res.status(302).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).render('errors/index', {
+            return res.status(422).json({
                 error: '422',
                 message: error.message[0].message,
             });
         }
 
-        res.status(500).render({
+        res.status(500).json({
             error: '500',
             message: error.message[0].message,
         });
@@ -154,13 +154,13 @@ async function deleteById(req, res, next) {
         return res.status(200).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).render('errors/index', {
+            return res.status(422).json({
                 error: '422',
                 message: error.message[0].message,
             });
         }
 
-        res.status(500).render({
+        res.status(500).json({
             error: '500',
             message: error.message[0].message,
         });

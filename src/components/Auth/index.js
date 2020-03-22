@@ -138,7 +138,7 @@ const authenticateToken = (req, res, next) => {
             const refreshToken = refreshHeader && refreshHeader.split(' ')[1];
 
             if (refreshToken === null) {
-                res.sendstatus(403);
+                return res.sendstatus(403);
             }
 
             const userId = getUserId(refreshToken);
@@ -146,7 +146,7 @@ const authenticateToken = (req, res, next) => {
             const userFromDbId = getUserFromDbId(userFromDb);
 
             if (userId !== userFromDbId) {
-                res.sendstatus(403);
+                return res.sendstatus(403);
             }
 
             const payload = {
@@ -160,7 +160,7 @@ const authenticateToken = (req, res, next) => {
             return res.send({ accessToken: newAccessToken, refreshToken: newRefreshToken });
         }
         req.user = user;
-        next();
+        return next();
     });
 };
 
