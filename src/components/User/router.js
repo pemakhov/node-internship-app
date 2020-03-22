@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const UserComponent = require('../User');
+const { authenticateToken } = require('../Auth');
 
 /**
  * Express router to mount user related functions on.
@@ -16,7 +17,7 @@ const router = Router();
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/', UserComponent.findAll);
+router.get('/', authenticateToken, UserComponent.findAll);
 
 /**
  * Route serving a user
@@ -36,7 +37,7 @@ router.get('/:id', UserComponent.findById);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/', UserComponent.create);
+router.post('/', authenticateToken, UserComponent.create);
 
 /**
  * Route serving a new user
@@ -46,7 +47,7 @@ router.post('/', UserComponent.create);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/update', UserComponent.updateById);
+router.post('/update', authenticateToken, UserComponent.updateById);
 
 /**
  * Route serving a new user
@@ -56,6 +57,6 @@ router.post('/update', UserComponent.updateById);
  * @param {string} path -Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/delete', UserComponent.deleteById);
+router.post('/delete', authenticateToken, UserComponent.deleteById);
 
 module.exports = router;
