@@ -11,17 +11,14 @@ const testAdmin = require('../test-admin');
 chai.use(chaiAsPromised);
 
 const { expect } = chai;
-const ACCESS_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZmY1NTk2ZTE2ZTIxMzg5NzEwZjMiLCJuYW1lIjoiU2VyZ2UiLCJpYXQiOjE1ODUxNjUyOTksImV4cCI6MTU4NTE3MjQ5OX0.EhYAjJBmEpBhi20ISvepurjcBuYCmiCjNZH6pcyBW2w';
 
 let testUserId;
-let csrfToken;
 
 const csrfParser = new htmlParser.Parser({
     onopentag(name, attribs) {
         if (name === 'input' && attribs.id === 'csrf-main') {
             testUser._csrf = attribs.value;
             testAdmin._csrf = attribs.value;
-            csrfToken = attribs.value;
         }
     },
 });

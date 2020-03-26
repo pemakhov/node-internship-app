@@ -1,0 +1,20 @@
+GET http://localhost:3000/v1/auth
+
+###
+POST http://localhost:3000/v1/auth/authenticate
+Cookie: _csrf=zfcgt0kA-zBDI48qFX5VIFe8g1dKCpCntBM4
+Content-Type: application/json
+
+{
+    "name": "Serge",
+    "pass": "12345",
+    "_csrf": "zfcgt0kA-zBDI48qFX5VIFe8g1dKCpCntBM4"
+}
+
+###
+GET http://localhost:3000/v1/users
+Cookie: authorization=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZmY1NTk2ZTE2ZTIxMzg5NzEwZjMiLCJuYW1lIjoiU2VyZ2UiLCJpYXQiOjE1ODUyNTUyMTEsImV4cCI6MTU4NTI2MjQxMX0.ISASfDgSEIpBKrKLJSyIYvVWqugo9guJMgvPItPixZU
+###
+GET http://localhost:3000/v1/auth/refresh
+Cookie: refresh=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZmY1NTk2ZTE2ZTIxMzg5NzEwZjMiLCJuYW1lIjoiU2VyZ2UiLCJpYXQiOjE1ODUyNTQ2MzN9.ApuDvY2fD7vB_C6E8gmuCpMx4Bt-0zcydoBjNNsUJy4
+###
