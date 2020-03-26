@@ -1,15 +1,16 @@
-### Run app
+### Queries
 ```
-    npm run start
+GET http://localhost:3000/v1/auth
 ```
-### Open in browser
+Get the login form
 ```
-    http://localhost:3000/v1/users
+POST http://localhost:3000/v1/auth/authenticate
 ```
-### Grab emails
-``` npm run grab-emails
+Send the admin name and pass to sign up or log in and get a pair of acces and refresh tokens
 ```
-### Create screenshot, upload and share it, save the link
-Run the script from its dirrectory
-``` node screenshot-uploader.js
+GET http://localhost:3000/v1/auth/refresh
 ```
+Check the refresh token, delete the existing one from the data base. Create a new pair of access and refresh tokens.
+
+### For better experience
+please, check out requests.rest file. VS Code REST Client extension must be installed

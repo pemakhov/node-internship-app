@@ -20,12 +20,22 @@ router.get('/', AuthComponent.login);
 
 /**
  * Route serving a new auth user
- * @name /v1/auth
+ * @name /v1/auth/authenticate
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
 router.post('/authenticate', AuthComponent.auth);
+
+/**
+ * Route serving a new auth user
+ * @name /v1/auth/refresh
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.get('/refresh', AuthComponent.refresh);
 
 module.exports = router;

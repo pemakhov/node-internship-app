@@ -56,10 +56,22 @@ function saveRefreshToken(token) {
     return RefreshTokenModel.create(token);
 }
 
+/**
+ * @exports
+ * @method findAndDeleteRefreshToken
+ * @param {object} profile
+ * @summary create a new user
+ * @returns {Promise<AuthUserModel>}
+ */
+function findAndDeleteRefreshToken(refreshToken) {
+    return RefreshTokenModel.findOneAndDelete({ refreshToken });
+}
+
 module.exports = {
     findById,
     findByName,
     create,
     deleteById,
     saveRefreshToken,
+    findAndDeleteRefreshToken,
 };

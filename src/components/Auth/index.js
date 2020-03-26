@@ -5,7 +5,7 @@ const AuthService = require('./service');
 const AuthValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
 
-const ACCESS_TOKEN_EXPIRES_IN = '1h';
+const ACCESS_TOKEN_EXPIRES_IN = '2h';
 
 /**
  * Renders login page
@@ -76,6 +76,8 @@ const auth = async (req, res, next) => {
         };
 
         const refreshToken = getRefreshToken(payload);
+
+        /* Save refresh token in database */
         AuthService.saveRefreshToken({ refreshToken });
 
         res.status(200).send({
@@ -88,34 +90,7 @@ const auth = async (req, res, next) => {
 };
 
 /**
- * Parses user id from refresh token
- * @param {String} refreshToken
- */
-const getUserId = (refreshToken) => jwt.decode(refreshToken)._id;
-
-/**
- * Gets database user document for the provided ID
- * @param {String} userId
- */
-const getUserFromDb = async (userId) => AuthService.findById(userId);
-
-/**
- * Removes the first and the last char in the string
- * @param {String} string
- */
-const stripQuotes = (string) => string.slice(1, -1);
-
-/**
- * Gets user ID from provided user object
- * @param {String} user
- */
-const getUserFromDbId = (user) => {
-    const id = JSON.stringify(user._id);
-    return stripQuotes(id);
-};
-
-/**
- * Checks access token. If it is expired, generates a pair of access and refresh tokens
+ * Checks access token. If it is expired, throws an error
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
@@ -134,38 +109,61 @@ const authenticateToken = (req, res, next) => {
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (error, user) => {
         if (error) {
-            const refreshHeader = req.cookies.refresh;
-            const refreshToken = refreshHeader && refreshHeader.split(' ')[1];
-
-            if (refreshToken === null) {
-                return res.sendstatus(403);
-            }
-
-            const userId = getUserId(refreshToken);
-            const userFromDb = await getUserFromDb(userId);
-            const userFromDbId = getUserFromDbId(userFromDb);
-
-            if (userId !== userFromDbId) {
-                return res.sendstatus(403);
-            }
-
-            const payload = {
-                _id: userId,
-                name: userFromDb.name,
-            };
-
-            const newAccessToken = getAccessToken(payload);
-            const newRefreshToken = getRefreshToken(payload);
-
-            return res.send({ accessToken: newAccessToken, refreshToken: newRefreshToken });
+            return res.status(403);
         }
         req.user = user;
         return next();
     });
 };
 
+
+/**
+ * Checks refresh token. If it is ok, generates a pair of new access and refresh tokens
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise < void >}
+ */
+const refresh = async (req, res) => {
+    const refreshHeader = req.cookies.refresh;
+    const refreshToken = refreshHeader && refreshHeader.split(' ')[1];
+
+    if (refreshToken === null) {
+        return res.status(403);
+    }
+
+    try {
+        /* Delete old refresh token from the database */
+        const deleteResult = await AuthService.findAndDeleteRefreshToken(refreshToken);
+        if (deleteResult === null) {
+            /* If an old token was not found */
+            throw new Error('Authentication problem');
+        }
+
+        const payload = {
+            _id: jwt.decode(refreshToken)._id,
+            name: jwt.decode(refreshToken).name,
+        };
+
+        const newAccessToken = getAccessToken(payload);
+        const newRefreshToken = getRefreshToken(payload);
+
+        /* Save new refresh token in database */
+        await AuthService.saveRefreshToken({ refreshToken: newRefreshToken });
+
+        return res.send({ accessToken: newAccessToken, refreshToken: newRefreshToken });
+    } catch (deleteError) {
+        return res.status(403).json({
+            error: '403',
+            message: deleteError.message[0].message,
+        });
+    }
+};
+
 module.exports = {
     auth,
     authenticateToken,
     login,
+    refresh,
 };
