@@ -17,7 +17,6 @@ let testUserId;
 const csrfParser = new htmlParser.Parser({
     onopentag(name, attribs) {
         if (name === 'input' && attribs.id === 'csrf-main') {
-            testUser._csrf = attribs.value;
             testAdmin._csrf = attribs.value;
         }
     },
