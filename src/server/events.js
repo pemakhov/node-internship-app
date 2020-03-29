@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * @function
  * @param  {NodeJS.ErrnoException} error
@@ -13,16 +12,14 @@ function onError(error, port) {
     const bindPort = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
     switch (error.code) {
-    case 'EACCES':
-        console.error(`${bindPort} requires elevated privileges`);
-        process.exit(1);
-        break;
-    case 'EADDRINUSE':
-        console.error(`${bindPort} is already in use`);
-        process.exit(1);
-        break;
-    default:
-        throw error;
+        case 'EACCES':
+            console.error(`${bindPort} requires elevated privileges`);
+            process.exit(1);
+        case 'EADDRINUSE':
+            console.error(`${bindPort} is already in use`);
+            process.exit(1);
+        default:
+            throw error;
     }
 }
 /**

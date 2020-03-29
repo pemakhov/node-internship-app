@@ -1,7 +1,0 @@
-<tr>
-    <td> <%= i + 1 %> </td>
-    <td> <%= user.email %> </td>
-    <td> <%- include('update-modal', { userId: user._id, csrfToken }); %> </td>
-    <td> <%= user.fullName %> </td>
-    <td> <%- include('delete-modal', { userId: user._id, csrfToken }); %> </td>
-</tr>
