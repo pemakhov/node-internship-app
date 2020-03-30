@@ -1,12 +1,11 @@
-// In this file you can configure migrate-mongo
-
+/* migrate-mongo configuration */
 const config = {
     mongodb: {
-        // TODO Change (or review) the url to your MongoDB:
+        /* The url to MongoDB */
         url: 'mongodb://localhost:27017',
 
-        // TODO Change this to your database name:
-        databaseName: 'YOURDATABASENAME',
+        /* Database name */
+        databaseName: 'books_db',
 
         options: {
             useNewUrlParser: true, // removes a deprecation warning when connecting
@@ -16,9 +15,8 @@ const config = {
         },
     },
 
-    // The migrations dir, can be an relative or absolute path.
-    // Only edit this when really necessary.
-    migrationsDir: 'migrations',
+    /* The migrations dir */
+    migrationsDir: 'books',
 
     // The mongodb collection where the applied changes are stored.
     // Only edit this when really necessary.
