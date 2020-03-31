@@ -5,7 +5,7 @@
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function chart(req, res, next) {
+const chart = async (req, res, next) => {
     try {
         return res.status(200).json({
             data: [
@@ -143,9 +143,17 @@ async function chart(req, res, next) {
 
         return next(error);
     }
-}
+};
 
+const map = (req, res, next) => {
+    try {
+        res.status(200).render('books');
+    } catch (error) {
+        next(error);
+    }
+};
 
 module.exports = {
     chart,
+    map,
 };

@@ -18,4 +18,6 @@ const router = Router();
  */
 router.get('/', BooksComponent.chart);
 
+router.get('/map', BooksComponent.map);
+
 module.exports = router;
