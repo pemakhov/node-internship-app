@@ -9,6 +9,7 @@ const BooksService = require('./service');
  */
 const chart = async (req, res, next) => {
     try {
+        BooksService.getChartData();
         return res.status(200).json({
             data: [
                 {
