@@ -1,3 +1,5 @@
+const BooksService = require('./service');
+
 /**
  * @function
  * @param {express.Request} req
@@ -147,7 +149,7 @@ const chart = async (req, res, next) => {
 
 const map = (req, res, next) => {
     try {
-        res.status(200).render('books');
+        res.status(200).sendFile('public/index.html', { root: `${__dirname}/../../..` });
     } catch (error) {
         next(error);
     }

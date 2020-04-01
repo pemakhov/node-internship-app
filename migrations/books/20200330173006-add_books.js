@@ -13,8 +13,8 @@ module.exports = {
         try {
             const books = await csvToJson().fromFile(DATA_PATH);
             books.forEach((book) => {
-                book.createdAt = Date().toString();
-                book.versionKey = 0;
+                book.createdAt = Date.now();
+                book.updatedAt = Date.now();
             });
             await db.collection(COLLECTION_NAME).insertMany(books);
         } catch (error) {
