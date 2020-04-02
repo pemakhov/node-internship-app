@@ -1,6 +1,10 @@
-1. Migrate books collection from books.xlsx or books.csv file.
-    - [migrate-mongo](https://www.npmjs.com/package/migrate-mongo)
+## Main tasks
 
-2. Load data to chart from database.
+- [x] Migrate books collection from books.xlsx or books.csv file.
+- [x] Load data to chart from database.
+- [x] Calculate field Title length for each document and migrate result value to collection. 
 
-3. Calculate field Title length for each document and migrate result value to collection. 
+## Notes
+- Migrations work both ways
+- The route for the World Map view is `v1/books/map`
+- Migrations require MongoDB version ≥4.2
