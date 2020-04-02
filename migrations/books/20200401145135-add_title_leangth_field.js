@@ -18,6 +18,18 @@ module.exports = {
     },
 
     async down(db) {
-
+        try {
+            await db.collection(COLLECTION_NAME).updateMany(
+                {},
+                [
+                    { $unset: 'titleLength' },
+                    {
+                        $set: { updatedAt: '$$NOW' },
+                    },
+                ],
+            );
+        } catch (error) {
+            console.error(error);
+        }
     },
 };
