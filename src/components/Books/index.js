@@ -1,6 +1,7 @@
 const BooksService = require('./service');
 
 /**
+ * Gets the number of books per country and passes it in the JSON format
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
@@ -21,6 +22,13 @@ const chart = async (req, res, next) => {
     }
 };
 
+/**
+ * Sends the html file responsible for a world map view
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
 const map = (req, res, next) => {
     try {
         res.status(200).sendFile('public/index.html', { root: `${__dirname}/../../..` });

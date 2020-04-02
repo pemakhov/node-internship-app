@@ -1,31 +1,30 @@
 const BooksModel = require('./model');
 
 /**
+ * Gets the number of books by country
  * @method getChartData
  * @param {any}
- * @returns {any}
+ * @returns {Promise}
  */
-const getChartData = async () => {
-    return BooksModel.aggregate([
-        {
-            $match: {},
+const getChartData = async () => BooksModel.aggregate([
+    {
+        $match: {},
+    },
+    {
+        $group: {
+            _id: '$code3',
+            code3: { $first: '$code3' },
+            value: { $sum: 1 },
         },
-        {
-            $group: {
-                _id: '$code3',
-                value: { $sum: 1 },
-                code3: { $first: '$code3' },
-            },
+    },
+    {
+        $project: {
+            _id: 0,
+            code3: 1,
+            value: 1,
         },
-        {
-            $project: {
-                _id: 0,
-                code3: 1,
-                value: 1,
-            },
-        },
-    ]);
-};
+    },
+]);
 
 module.exports = {
     getChartData,
