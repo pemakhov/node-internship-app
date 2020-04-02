@@ -5,12 +5,12 @@ module.exports = {
         try {
             await db.collection(COLLECTION_NAME).updateMany(
                 {},
-                {
+                [{
                     $set: {
                         titleLength: { $strLenCP: '$title' },
                         updatedAt: '$$NOW',
                     },
-                },
+                }],
             );
         } catch (error) {
             console.error(error);
