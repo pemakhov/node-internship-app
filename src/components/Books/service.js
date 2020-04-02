@@ -6,7 +6,7 @@ const BooksModel = require('./model');
  * @returns {any}
  */
 const getChartData = async () => {
-    const agg = await BooksModel.aggregate([
+    return BooksModel.aggregate([
         {
             $match: {},
         },
@@ -14,17 +14,17 @@ const getChartData = async () => {
             $group: {
                 _id: '$code3',
                 value: { $sum: 1 },
+                code3: { $first: '$code3' },
             },
         },
         {
             $project: {
-                code3: '$code3',
-                value: '$value',
+                _id: 0,
+                code3: 1,
+                value: 1,
             },
         },
     ]);
-    console.log(agg);
-    return [];
 };
 
 module.exports = {
