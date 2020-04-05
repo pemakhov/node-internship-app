@@ -1,4 +1,9 @@
 {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
     "env": {
         "commonjs": true,
         "es6": true,
@@ -8,7 +13,10 @@
         "mocha": true
     },
     "extends": [
-        "airbnb-base"
+        "airbnb-base",
+        "eslint: recommended",
+        "plugin: @typescript-eslint/eslint-recommended",
+        "plugin: @typescript-eslint/recommended"
     ],
     "globals": {
         "Atomics": "readonly",

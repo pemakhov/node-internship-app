@@ -1,4 +1,4 @@
-const BooksModel = require('./model');
+import BooksModel from './model';
 
 /**
  * Gets the number of books by country
@@ -26,6 +26,6 @@ const getChartData = async () => BooksModel.aggregate([
     },
 ]);
 
-module.exports = {
+export default {
     getChartData,
 };

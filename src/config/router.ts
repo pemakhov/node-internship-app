@@ -1,8 +1,8 @@
-const express = require('express');
-const http = require('http');
-const BooksRouter = require('../components/Books/router');
+import express from 'express';
+import http from 'http';
+import BooksRouter from '../components/Books/router';
 
-module.exports = {
+export default {
     /**
      * @function
      * @param {express.Application} app
@@ -21,6 +21,14 @@ module.exports = {
          * @param {callback} middleware - Express middleware.
          */
         app.use('/v1/books', BooksRouter);
+
+        /**
+         * Sets public files dirrectory
+         * @function
+         * @inner
+         * @param {callback} middleware - Express middleware.
+         */
+        app.use(express.static('public'));
 
         /**
          * @description No results returned mean the object is not found

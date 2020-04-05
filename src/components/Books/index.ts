@@ -1,4 +1,4 @@
-const BooksService = require('./service');
+import BooksService from './service';
 
 /**
  * Gets the number of books per country and passes it in the JSON format
@@ -37,7 +37,7 @@ const map = (req, res, next) => {
     }
 };
 
-module.exports = {
+export default {
     chart,
     map,
 };

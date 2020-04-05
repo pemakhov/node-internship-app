@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const MONGODB_URI = 'mongodb://localhost:27017/';
 const MONGODB_DB_MAIN = 'books_db';
@@ -17,4 +17,4 @@ const connectOptions = {
     useUnifiedTopology: true,
 };
 
-module.exports = mongoose.createConnection(MONGO_URI, connectOptions);
+export default mongoose.createConnection(MONGO_URI, connectOptions);

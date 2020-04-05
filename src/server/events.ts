@@ -45,7 +45,7 @@ function bind(Server, port) {
     Server.on('listening', this.onListening.bind(Server));
 }
 
-module.exports = {
+export default {
     onError,
     onListening,
     bind,

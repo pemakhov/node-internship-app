@@ -1,5 +1,5 @@
-const { Schema } = require('mongoose');
-const connections = require('../../config/connection');
+import { Schema } from 'mongoose';
+import connections from '../../config/connection';
 
 const BooksSchema = new Schema(
     {
@@ -34,4 +34,4 @@ const BooksSchema = new Schema(
     },
 );
 
-module.exports = connections.model('BooksModel', BooksSchema);
+export default connections.model('BooksModel', BooksSchema);
