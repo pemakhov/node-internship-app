@@ -2,14 +2,24 @@ import express from 'express';
 import http from 'http';
 import BooksRouter from '../components/Books/Router';
 
+/**
+ * Class joining routs to the server
+ */
 export default class Router {
+    /**
+     * Router of Books component
+     */
     private booksRouter: express.Router;
 
+    /**
+     * Class constructor
+     */
     constructor() {
         this.booksRouter = new BooksRouter().router;
     }
 
     /**
+     * Initiates joining routers to the server
      * @function
      * @param {express.Application} app
      * @summary init Application router
@@ -37,6 +47,7 @@ export default class Router {
         app.use(express.static('public'));
 
         /**
+         * Processes errors
          * @description No results returned mean the object is not found
          * @function
          * @inner

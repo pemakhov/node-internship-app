@@ -1,14 +1,29 @@
-import { Schema, SchemaDefinition, SchemaOptions } from 'mongoose';
+import mongoose from 'mongoose';
 import Connection from '../../config/Connection';
 
+/**
+ * Class containing the model, describing data stored in the database
+ */
 export default class Model {
-    private bookSchema: Schema;
+    /**
+     * Mongoose schema
+     */
+    private bookSchema: mongoose.Schema;
 
-    private connection;
+    /**
+     * Mongoose connection
+     */
+    private connection: mongoose.Connection;
 
-    private booksModel;
+    /**
+     * Model for the data of component Books
+     */
+    private booksModel: Model | mongoose.Model<mongoose.Document, {}>;
 
-    private schemaDefinition: SchemaDefinition = {
+    /**
+     * Schema definition
+     */
+    private schemaDefinition: mongoose.SchemaDefinition = {
         title: {
             type: String,
             trim: true,
@@ -35,18 +50,27 @@ export default class Model {
         },
     };
 
-    private schemaOptions: SchemaOptions = {
+    /**
+     * Schema options
+     */
+    private schemaOptions: mongoose.SchemaOptions = {
         collection: 'booksmodel',
         versionKey: false,
     };
 
+    /**
+     * Class constructor
+     */
     constructor() {
-        this.bookSchema = new Schema(this.schemaDefinition, this.schemaOptions);
+        this.bookSchema = new mongoose.Schema(this.schemaDefinition, this.schemaOptions);
         this.connection = new Connection().connection;
         this.booksModel = this.connection.model('BooksModel', this.bookSchema);
     }
 
-    public get model() {
+    /**
+     * Getter for the Books Model
+     */
+    public get model(): Model | mongoose.Model<mongoose.Document, {}> {
         return this.booksModel;
     }
 }

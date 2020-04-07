@@ -1,12 +1,21 @@
 import BooksModel from './Model';
+import IBooks from './IBooks';
 
-interface Books {
-    [index: number]: { code3: string; value: number };
-}
-
+/**
+ * Class containing methods for database queries
+ */
 export default class Service {
+    /**
+     * Model of Books component
+     */
+    // ? If I take type from usage, I get the error that property
+    // ? 'aggregate' doesn't exist in Model (!)
+    // eslint-disable-next-line @typescript-eslint/typedef
     private booksModel;
 
+    /**
+     * Class constructor
+     */
     constructor() {
         this.booksModel = new BooksModel().model;
     }
@@ -17,7 +26,7 @@ export default class Service {
      * @param {any}
      * @returns {Promise}
      */
-    public getChartData(): Books {
+    public getChartData(): IBooks {
         return this.booksModel.aggregate([
             {
                 $match: {},
