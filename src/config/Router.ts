@@ -1,16 +1,22 @@
 import express from 'express';
 import http from 'http';
-import BooksRouter from '../components/Books/router';
+import BooksRouter from '../components/Books/Router';
 
-export default {
+export default class Router {
+    private booksRouter: express.Router;
+
+    constructor() {
+        this.booksRouter = new BooksRouter().router;
+    }
+
     /**
      * @function
      * @param {express.Application} app
      * @summary init Application router
      * @returns void
      */
-    init(app) {
-        const router = express.Router();
+    init(app: express.Application): void {
+        const router: express.Router = express.Router();
 
         /**
          * Forwards any requests to the /v1/books URI to BooksRouter.
@@ -20,7 +26,7 @@ export default {
          * @param {string} path - Express path
          * @param {callback} middleware - Express middleware.
          */
-        app.use('/v1/books', BooksRouter);
+        app.use('/v1/books', this.booksRouter);
 
         /**
          * Sets public files dirrectory
@@ -36,7 +42,7 @@ export default {
          * @inner
          * @param {callback} middleware - Express middleware.
          */
-        app.use((req, res) => {
+        app.use((req: express.Request, res: express.Response) => {
             res.status(404).send(http.STATUS_CODES[404]);
         });
 
@@ -46,5 +52,5 @@ export default {
          * @param {express.Router}
          */
         app.use(router);
-    },
-};
+    }
+}

@@ -1,17 +1,19 @@
+/* eslint-disable @typescript-eslint/typedef */
+// I didn't understand how to solve this typedef mistake
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import helmet from 'helmet';
+import express from 'express';
 
-export default {
+export default class Middleware {
     /**
-     * @function
      * @description express middleware
      * @param {express.Application} app
      * @returns void
      */
-    init(app) {
+    public init = (app: express.Application): void => {
         app.use(
             bodyParser.urlencoded({
                 extended: true,
@@ -40,5 +42,5 @@ export default {
             );
             next();
         });
-    },
-};
+    }
+}
