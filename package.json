@@ -1,48 +1,27 @@
 {
-    "name": "lesson3",
-    "version": "0.0.1",
-    "main": "./src/server/index.js",
-    "scripts": {
-        "dev": "nodemon"
-    },
-    "dependencies": {
-        "@hapi/joi": "17.1.0",
-        "body-parser": "1.18.2",
-        "compression": "1.7.1",
-        "cookie-parser": "1.4.3",
-        "cors": "2.8.5",
-        "csvtojson": "2.0.10",
-        "ejs": "3.0.2",
-        "express": "4.16.2",
-        "helmet": "3.22.0",
-        "mongodb": "3.5.5",
-        "mongoose": "5.7.5",
-        "supertest": "4.0.2",
-        "typescript": "3.8.3"
-    },
-    "devDependencies": {
-        "@types/compression": "^1.7.0",
-        "@types/cookie-parser": "^1.4.2",
-        "@types/cors": "^2.8.6",
-        "@types/express": "^4.17.4",
-        "@types/helmet": "0.0.45",
-        "@types/mongoose": "^5.7.8",
-        "@typescript-eslint/eslint-plugin": "^2.27.0",
-        "@typescript-eslint/parser": "^2.27.0",
-        "cz-conventional-changelog": "3.1.0",
-        "eslint": "^6.8.0",
-        "eslint-config-airbnb-base": "^14.1.0",
-        "eslint-plugin-import": "^2.20.2"
-    },
-    "config": {
-        "commitizen": {
-            "path": "./node_modules/cz-conventional-changelog"
-        }
-    },
-    "type": "module",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/pemakhov/node-internship-app"
-    },
-    "license": "MIT"
+  "name": "lesson8",
+  "version": "1.0.0",
+  "description": "# Next urls must returns domains content with `<h1>Hello world!</h1>` content",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pemakhov/node-internship-lesson2.git"
+  },
+  "author": "Serhii Pemakhov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pemakhov/node-internship-lesson2/issues"
+  },
+  "homepage": "https://github.com/pemakhov/node-internship-lesson2#readme",
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
