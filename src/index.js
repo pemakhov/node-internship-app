@@ -2,6 +2,7 @@
 const http = require('http');
 const url = require('url');
 const httpProxy = require('http-proxy');
+const etag = require('etag');
 const service = require('./service');
 
 /**
@@ -12,11 +13,13 @@ const PORT = 3000;
 /**
  * Proxy server
  */
-const proxy = httpProxy.createProxyServer();
+const proxy = httpProxy.createProxyServer({});
 
 const server = http.createServer((req, res) => {
     try {
         const { host } = url.parse(req.url, true).query;
+        console.log(host);
+        console.log(req.url);
 
         proxy.web(req, res, {
             target: host,
@@ -26,6 +29,7 @@ const server = http.createServer((req, res) => {
         });
     } catch (error) {
         console.error(error);
+        res.end(); // Interrupts loading if the URL is not proper
     }
 });
 
@@ -54,6 +58,9 @@ const onProxyRes = (proxyRes, req, res) => {
             const result = await service.gzip(markedHtml);
 
             res.setHeader('Content-Encoding', 'gzip');
+            res.setHeader('Content-Length', Buffer.byteLength(result, 'utf-8'));
+            res.setHeader('ETag', etag(result));
+            res.setHeader('Cache-Control', 'max-age=3600');
             res.write(result);
             res.end();
         });
