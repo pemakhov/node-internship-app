@@ -27,10 +27,15 @@ const gzip = (buffer) => new Promise((resolve, reject) => {
 });
 
 /**
+ * Phrase to insert in the web page
+ */
+const phrase = 'Hello world!';
+
+/**
  * Html-code containing a phrase to insert before </body> tag
  */
 const replacement = `<h1 style="position: absolute; top: 10px; left: 20px;
-                    color: aqua; z-index: 1000;">Hello world!</h1></body>`;
+                    color: aqua; z-index: 1000;">${phrase}</h1></body>`;
 
 /**
  * Replaces html tag </body> with 'replacement' code
