@@ -1,6 +1,13 @@
-### Create proxy server
+### Proxy server
 
-# Next urls must returns domains content with `<h1>Hello world!</h1>` content
+## Task completion review
+[x] Proxy server
+
+[x] Additional content
+
+[ ] google.com support
+
+# Next urls return domains content with `<h1>Hello world!</h1>` content
 
 - http://localhost:3000/?host=https://github.com
 
