@@ -30,6 +30,6 @@
   },
   "dependencies": {
     "finalhandler": "1.1.2",
-    "http-proxy": "1.18.0"
+    "http-proxy": "1.18.1"
   }
 }
